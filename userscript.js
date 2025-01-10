@@ -10,6 +10,9 @@
 
 'use strict';
 
+const GREEN = "#5cb85c";
+const YELLOW = "#f0ad4e";
+
 const getResult = async (url) => {
     const formatInfo = (cells) => {
         const name = cells[1].querySelector("a").textContent.trim().split(" ")[0];
@@ -55,12 +58,32 @@ const getResult = async (url) => {
     }
 }
 
+const getQuestions = () => {
+    const questions = [""];
+    const trs = document.querySelectorAll("tr");
+    trs.forEach((tr, idx) => {
+        if (idx === 0) return;
+        let questName = tr.querySelector("td").querySelector("a").textContent.trim();
+        questions.push(questName);
+    })
+    return questions;
+}
+
+const adaptResult = (questions, results) => {
+    results.reverse().forEach(result => {
+        questions.index(result.name).style.backgroundColor = (result.result === "AC") ? GREEN : YELLOW;
+    })
+}
+
 const app = () => {
     const currentURL = window.location.href;
     // const currentURL = "https://atcoder.jp/contests/tessoku-book/tasks";
     const fetchPage = currentURL.replace("tasks", "submissions/me");
-    const rlt = getResult(fetchPage);
-    console.log(rlt);
+    const results = getResult(fetchPage);
+    const questions = getQuestions(currentURL);
+    console.log(results);
+    console.log(questions);
+    adaptResult(questions, results);
 }
 
 app();
