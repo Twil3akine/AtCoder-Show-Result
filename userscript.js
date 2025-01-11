@@ -70,19 +70,20 @@ const getQuestions = () => {
 }
 
 const adaptResult = (questions, results) => {
+    const trs = document.querySelectorAll("tr");
+    const  = document.querySelectorAll("tr");
     results.reverse().forEach(result => {
-        questions.index(result.name).style.backgroundColor = (result.result === "AC") ? GREEN : YELLOW;
+        const targetElement = trs[questions.indexOf(result.name)];
+        targetElement.style.backgroundColor = (result.result === "AC") ? GREEN : YELLOW;
     })
 }
 
-const app = () => {
+const app = async () => {
     const currentURL = window.location.href;
     // const currentURL = "https://atcoder.jp/contests/tessoku-book/tasks";
     const fetchPage = currentURL.replace("tasks", "submissions/me");
-    const results = getResult(fetchPage);
+    const results = await getResult(fetchPage);
     const questions = getQuestions(currentURL);
-    console.log(results);
-    console.log(questions);
     adaptResult(questions, results);
 }
 
